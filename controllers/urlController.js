@@ -1,19 +1,56 @@
 const express = require("express");
+const { nanoid } = require("nanoid");
+const User = require("../models/shortUrl");
 
 const app = express();
 
-async function createUrl(req, res) {
-  const originalUrl = req.body.url;
-  if (!originalUrl) {
-    return res.status(406).json({ message: "URL is required" });
+async function checkurl(url, next) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error("Invalid Url");
+    }
+    return true;
+  } catch (error) {
+    next(error);
   }
-  console.log(originalUrl);
-  fetch(originalUrl).catch(() => {
-    res.json({ message: "Provided URL is either incorrect or not working." });
-  });
-  res.status(200).json({ message: "Success" });
+}
+
+async function createUrl(req, res, next) {
+  try {
+    const originalUrl = req.body.url;
+    if (!originalUrl) {
+      throw new Error("Empty Field");
+    }
+    let checkResult = checkurl(originalUrl, next);
+    if (!checkResult) {
+      throw new Error("Invalid url");
+    }
+    const shortid = nanoid(8);
+    User.create({ originalUrl: originalUrl, shortUrl: shortid, clicks: 0 })
+      .then(() => {
+        console.log("\nCreated successfully...");
+        res.status(201).json({ url: `localhost:3001/${shortid}` });
+      })
+      .catch((error) => {
+        next(error);
+      });
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function getUrls(req, res) {
+  try {
+    const data = await User.find({});
+    res.json(data);
+  } catch (error) {
+    console.log(`\nError: ${error}`);
+    res.status(500).json({ error: `${error}` });
+  }
 }
 
 module.exports = {
   createUrl,
+  getUrls,
 };

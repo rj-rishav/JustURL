@@ -1,12 +1,11 @@
-const express = require('express')
-const { createUrl } = require('../controllers/urlController')
+const express = require("express");
+const { createUrl, getUrls } = require("../controllers/urlController");
 
-const app = express()
+const app = express();
 
-const router = express.Router()
-app.use(express.urlencoded({extended: false}));
+const router = express.Router();
+app.use(express.urlencoded({ extended: false }));
 
-router
-.post('/', createUrl)
+router.post("/", createUrl).get("/", getUrls);
 
-module.exports = router
+module.exports = router;
