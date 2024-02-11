@@ -1,8 +1,5 @@
-const express = require("express");
 const { nanoid } = require("nanoid");
 const User = require("../models/shortUrl");
-
-const app = express();
 
 async function checkurl(url, next) {
   try {
