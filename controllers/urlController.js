@@ -51,7 +51,6 @@ async function getUrls(req, res) {
   }
 }
 
-//TODO: creating the function to handle redirection
 async function redirectUrl(req, res, next) {
   try {
     const shortid = req.params.shortid;
@@ -62,8 +61,19 @@ async function redirectUrl(req, res, next) {
   }
 }
 
+async function deleteEntry(req, res, next) {
+  try {
+    const shortid = req.params.shortid;
+    await User.findOneAndDelete({ shortUrl: shortid });
+    res.json({ message: "Entry deleted" });
+  } catch (error) {
+    next(error);
+  }
+}
+
 module.exports = {
   createUrl,
   getUrls,
   redirectUrl,
+  deleteEntry,
 };
