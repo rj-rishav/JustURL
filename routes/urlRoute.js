@@ -1,11 +1,18 @@
 const express = require("express");
-const { createUrl, getUrls } = require("../controllers/urlController");
+const {
+  createUrl,
+  getUrls,
+  redirectUrl,
+} = require("../controllers/urlController");
 
 const app = express();
 
 const router = express.Router();
 app.use(express.urlencoded({ extended: false }));
 
-router.post("/", createUrl).get("/", getUrls);
+router
+  .post("/urls", createUrl)
+  .get("/urls", getUrls)
+  .get("/:shortid", redirectUrl);
 
 module.exports = router;

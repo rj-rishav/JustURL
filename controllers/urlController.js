@@ -13,6 +13,7 @@ async function checkurl(url, next) {
     return true;
   } catch (error) {
     next(error);
+    return false;
   }
 }
 
@@ -50,7 +51,19 @@ async function getUrls(req, res) {
   }
 }
 
+//TODO: creating the function to handle redirection
+async function redirectUrl(req, res, next) {
+  try {
+    const shortid = req.params.shortid;
+    const data = await User.findOne({ shortUrl: shortid });
+    res.redirect(data.originalUrl);
+  } catch (error) {
+    next(error);
+  }
+}
+
 module.exports = {
   createUrl,
   getUrls,
+  redirectUrl,
 };
