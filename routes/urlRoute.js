@@ -6,10 +6,7 @@ const {
   deleteEntry,
 } = require("../controllers/urlController");
 
-const app = express();
-
 const router = express.Router();
-app.use(express.urlencoded({ extended: false }));
 
 router
   .post("/urls", createUrl)
