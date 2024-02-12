@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const connectDB = require("./connection");
 const router = require("./routes/urlRoute");
@@ -14,5 +15,5 @@ app.use("/", router);
 app.use(errorMidleware);
 
 app.listen(process.env.PORT || 3001, () => {
-  console.log(`\nServer started...`);
+  console.log(`\nServer started at ${process.env.PORT}...`);
 });

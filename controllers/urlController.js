@@ -16,7 +16,7 @@ async function createUrl(req, res, next) {
     User.create({ originalUrl: originalUrl, shortUrl: shortid, clicks: 0 })
       .then(() => {
         console.log("\nCreated successfully...");
-        res.status(201).json({ url: `localhost:3001/${shortid}` });
+        res.status(201).json({ url: `localhost:${process.env.PORT}/${shortid}` });
       })
       .catch((error) => {
         next(error);
