@@ -1,28 +1,16 @@
 const { nanoid } = require("nanoid");
 const User = require("../models/shortUrl");
 
-async function checkurl(url, next) {
-  try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error("Invalid Url");
-    }
-    return true;
-  } catch (error) {
-    next(error);
-    return false;
-  }
-}
-
 async function createUrl(req, res, next) {
   try {
     const originalUrl = req.body.url;
     if (!originalUrl) {
       throw new Error("Empty Field");
     }
-    let checkResult = checkurl(originalUrl, next);
-    if (!checkResult) {
-      throw new Error("Invalid url");
+    const urlRegex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
+    const isValidUrl = urlRegex.test(originalUrl);
+    if(!isValidUrl) {
+      throw new Error("Invalid URL");
     }
     const shortid = nanoid(8);
     User.create({ originalUrl: originalUrl, shortUrl: shortid, clicks: 0 })
