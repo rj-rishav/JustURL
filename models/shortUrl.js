@@ -14,8 +14,8 @@ const urlSchema = new mongoose.Schema({
     clicks: {
         type: Number,
         default: 0
-    }
-})
+    },
+}, { timestamps: true })
 
 // User Model
 const User = mongoose.model('User', urlSchema)
