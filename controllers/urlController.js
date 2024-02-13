@@ -40,6 +40,11 @@ async function redirectUrl(req, res, next) {
   try {
     const shortid = req.params.shortid;
     const data = await User.findOne({ shortUrl: shortid });
+    if (!data) {
+      throw new Error("Invalid URL");
+    }
+    data.clicks++;
+    data.save();
     res.redirect(data.originalUrl);
   } catch (error) {
     next(error);
