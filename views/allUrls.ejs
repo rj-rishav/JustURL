@@ -1,0 +1,21 @@
+<div class="container text-center mt-5">
+    <table class="table table-bordered table-striped" id="dataTable">
+      <tr>
+        <th>Short ID</th>
+        <th>Original URL</th>
+        <th>Clicks</th>
+        <th></th>
+      </tr>
+      <% for (const item of data) { %>
+        <tr>
+          <td> <%= item.shortUrl %> </td>
+          <td> <%= item.originalUrl %> </td>
+          <td> <%= item.clicks %></td>
+          <td>
+            <a href=""> <img height="20px" src="https://cdn-icons-png.flaticon.com/512/3439/3439691.png" alt=""></a>
+          </td>
+        </tr>
+      <% } %>
+    </table>
+
+</div>
